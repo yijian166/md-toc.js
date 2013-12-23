@@ -13,8 +13,8 @@ md-toc
 
 -	无需手动编辑markdown文件，不违背md宗旨，又能增加文章阅读时候的便利性，增强体验。
 
-
--	目前仅测试过**chrome**。
+-	快速生成目录，不必等待大资源加载完成（document ready后），用户感觉不到延迟。
+-	浏览器支持：**IE8 + **，**Chrome**，**Firefox**，**Opera**，**Safari**
 
 ### Demo
 

@@ -5,7 +5,7 @@
  */
 
 /**
- * dom raady form:http://www.cnblogs.com/rubylouvre/archive/2009/12/30/1635645.html
+ * dom ready form:http://www.cnblogs.com/rubylouvre/archive/2009/12/30/1635645.html
  */
  new function(){
   dom = [];
