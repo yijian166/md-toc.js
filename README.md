@@ -11,10 +11,10 @@ md-toc
 
 -	目录实在页面加载之后动态生成，对搜索引擎无用因此链接hash值顺次排序
 
--	无需手动编辑markdown文件，不违背md宗旨，又能增加文章阅读时候的便利性，增强体验。
+-	**无需手动编辑markdown文件，不违背md宗旨，又能增加文章阅读时候的便利性，增强体验**。
 
 -	快速生成目录，不必等待大资源加载完成（document ready后），用户感觉不到延迟。
--	浏览器支持：**IE8 + **，**Chrome**，**Firefox**，**Opera**，**Safari**
+-	浏览器支持：IE8+，Chrome，Firefox，Opera，Safari
 
 ### Demo
 
