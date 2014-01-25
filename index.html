@@ -46,11 +46,27 @@
 <li><p>目录实在页面加载之后动态生成，对搜索引擎无用因此链接hash值顺次排序</p></li>
 <li><p><strong>无需手动编辑markdown文件，不违背md宗旨，又能增加文章阅读时候的便利性，增强体验</strong>。</p></li>
 <li><p>快速生成目录，不必等待大资源加载完成（document ready后），用户感觉不到延迟。</p></li>
-<li>  浏览器支持：IE8+，Chrome，Firefox，Opera，Safari</li>
+<li>  浏览器支持：IE8+，Chrome，Firefox，Opera，Safari。</li>
+</ul><h3>
+<a name="%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="octicon octicon-link"></span></a>使用方法</h3>
+
+<p>在需要生成目录的元素内设置以下自定义属性，即可很方便的使用toc.js</p>
+
+<ul>
+<li>  <code>data-toc="true"</code>：如果想要生成目录，需要设置<code>data-toc</code>且赋值必须为<code>true</code>，建议文档中只设置一处，若有多处，只第一处生效；</li>
+<li>  <code>data-toc-class="toc"</code>：可选，此处定义目录元素的<code>class</code>值，若缺失则<code>class</code>默认为<code>toc</code>；</li>
+<li>  <code>data-toc-top="200"</code>：可选，此处做了简单的体验优化，设置了<strong>非负值</strong>时候，
+
+<ul>
+<li>  文档垂直滚动区域小余该值时：目录**<code>position:absolute</code>**，<code>top</code>为改值。横向定位属性(<code>left</code>或者<code>right</code>)，以及所需的定位依赖元素自行定义；</li>
+<li>  文档垂直滚动超出该值后，目录**<code>position:fixed;top:10px</code>**,向定位属性(<code>left</code>或者<code>right</code>)自行定义；</li>
+<li>  属性值最好不要带单位，负责去第一个字母前面的数字。</li>
+</ul>
+</li>
 </ul><h3>
 <a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h3>
 
-<p><a href="http://learn.hicc.me/html-css/images-audio-video.html">http://learn.hicc.me/html-css/images-audio-video.html</a></p>
+<p><a href="http://learn.hicc.me/html-css/images-audio-video.html">Demo:learn.hicc.me</a></p>
         </section>
 
         <footer>
