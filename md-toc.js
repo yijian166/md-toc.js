@@ -59,169 +59,225 @@
 
 dom.Ready(function(){
 
-    var pageBox = document.getElementById('post');
+    var elements = document.getElementsByTagName('*');
+    var pageBox ;
+    var needToc = false;
+
+    for(var i= 0 ,len =elements.length;i < len; i++ ){
+        if(elements[i].getAttribute('data-toc') && (elements[i].getAttribute('data-toc').toLowerCase() == 'true')){
+            pageBox = elements[i];
+            needToc = true;
+            break;
+        }
+    }
+
     var pageElements= pageBox.children;
     var pagelEmentsLength = pageElements.length ;
     var titleLists = [];
 
-    for(var i= 0 ; i< pagelEmentsLength;i++){
-        var pagelEment = pageElements[i];
-        var elementName = pagelEment.nodeName.toLowerCase();
+    for(var j= 0 ; j< pagelEmentsLength;j++){
+        var pagelEment = pageElements[j];
+        var elementName = pagelEment.tagName.toLowerCase();
         if ((elementName == 'h2') ||(elementName == 'h3') || (elementName == 'h4') || (elementName == 'h5') || (elementName == 'h6') ){
             titleLists.push(pagelEment) ;
-        };
-    } ;
+        }
+    }
+
+    var titleListsLen = titleLists.length;
+
+    if(needToc && titleListsLen ) {
+
+        var tocElement= document.createElement('div');
+        var tocContent = '';
+        var tocClass = 'toc';
+
+        if(pageBox.getAttribute('data-toc-class')){
+            tocClass = pageBox.getAttribute('data-toc-class').toLowerCase();
+        }
+
+        (function(){
 
 
-    var pageContent = '';
-    var pageInsideLists ;
-    var tempLists = [];
+            var tempLists = [];
 
-    for(var i = 0 ; i < titleLists.length;i ++) {
-        var j = i + 1;
-        var titleElement =  titleLists[i];
-        var titleElementName =  titleLists[i].tagName;
-        var titleElementText =   titleElement.innerHTML;
-        titleElement.setAttribute('id', 'tip' + i );
-        if(!(j == titleLists.length)) {
+            for(var i = 0 ; i < titleListsLen;i ++) {
+                var j = i + 1;
+                var titleElement =  titleLists[i];
+                var titleElementName =  titleLists[i].tagName;
+                var titleElementText =   titleElement.innerHTML;
+                titleElement.setAttribute('id', 'tip' + i );
 
-            var titleNextElementName =   titleLists[j].tagName;
+                if(!(j == titleListsLen)) {
 
-            if(titleElementName != titleNextElementName) {
+                    var titleNextElementName =   titleLists[j].tagName;
 
-                tempLists.push(titleElement);
+                    if(titleElementName != titleNextElementName) {
 
-                var checkColse = false;
+                        tempLists.push(titleElement);
 
-                for(var t = 0 ;t < tempLists.length ;t++) {
+                        var checkColse = false;
 
-                    var temp = tempLists[t];
-                    var tempName = temp.tagName;
+                        for(var t = 0 ;t < tempLists.length ;t++) {
 
-                    var y = 1;
+                            var temp = tempLists[t];
+                            var tempName = temp.tagName;
 
-
-                    if (tempName == titleNextElementName ){
+                            var y = 1;
 
 
-                        checkColse = true;
+                            if (tempName == titleNextElementName ){
 
-                        break;
+
+                                checkColse = true;
+
+                                break;
+                            }
+
+                            y++;
+
+                        }
+
+                        if(checkColse) {
+
+                            switch(y){
+                                case 1 :
+                                    tocContent  = tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a>'
+                                    + '</li></ul>'
+                                    ;
+                                    break;
+
+                                case 2 :
+                                    tocContent  = tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul>'
+                                    ;
+                                    break;
+                                case 3 :
+                                    tocContent  = tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul>'
+                                    ;
+                                    break;
+                                case 4 :
+                                    tocContent  = tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul></li></ul>'
+                                    ;
+                                    break;
+                                case 5 :
+                                    tocContent  = tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
+                                    ;
+                                    break;
+
+                            }
+                            tempLists.length = tempLists.length - y;
+                        }
+                        else {
+                            tocContent  =  tocContent +  '<li><a href="'
+                                + '#tip'
+                                + i
+                                +'">'
+                                +  titleElementText
+                                + '</a>'
+                                + '<ul>'
+                            ;
+                        }
+                    }
+                    else {
+                        tocContent  = tocContent
+                                    + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  titleElementText
+                                    + '</a></li>'
+                        ;
                     }
 
-                    y++;
-
-                };
-
-                if(checkColse) {
-
-                    if(y=='1'){
-                        pageContent  = pageContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a>'
-                            + '</li></ul>'
-                        ;
-                    };
-                    if(y=='2'){
-                        pageContent  = pageContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a>'
-                            + '</li></ul></li></ul>'
-                        ;
-                    };
-                    if(y=='3'){
-                        pageContent  = pageContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a>'
-                            + '</li></ul></li></ul></li></ul>'
-                        ;
-                    };
-                    if(y=='4'){
-                        pageContent  = pageContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a>'
-                            + '</li></ul></li></ul></li></ul></li></ul>'
-                        ;
-                    };
-                    if(y=='5'){
-                        pageContent  = pageContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a>'
-                            + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
-                        ;
-                    };
-                    tempLists.length = tempLists.length - y;
                 }
                 else {
-                    pageContent  =  pageContent +  '<li><a href="'
-                        + '#tip'
-                        + i
-                        +'">'
-                        +  titleElementText
-                        + '</a>'
-                        + '<ul>'
-                    ;
-                }
-            }
-            else {
-                pageContent  = pageContent
-                            + '<li><a href="'
+
+                    if(tempLists.length){
+
+                        tocContent  = tocContent + '<li><a href="'
                             + '#tip'
                             + i
                             +'">'
                             +  titleElementText
-                            + '</a></li>'
-                ;
+                            + '</a>'
+                        ;
+
+                        for(var x = tempLists.length;x > 0 ;x-- ){
+                            tocContent = tocContent
+                                          + '</li></ul>'
+                            ;
+
+                        }
+
+                    }
+                }
             }
 
+
+            tocContent = '<ul>'+ tocContent + '</ul>';
+
+
+        })();
+
+        tocElement.innerHTML = tocContent;
+
+
+
+        tocElement.setAttribute('class',tocClass) ;
+
+        pageBox.appendChild(tocElement);
+
+
+        var tocCustomSpy = pageBox.getAttribute('data-toc-top');
+
+        var tocSpyNum;
+
+        if(tocCustomSpy.search(/[a-z]/i) ===  -1 ){
+            tocSpyNum = tocCustomSpy;
+        }else {
+            tocSpyNum = tocCustomSpy.slice(0,tocCustomSpy.search(/[a-z]/i));
         }
-        else {
 
-            if(tempLists.length){
+        if(tocSpyNum && tocSpyNum > -1){
+            console.log(tocSpyNum);
+            window.onscroll = function(){
+                var t = document.documentElement.scrollTop || document.body.scrollTop;
 
-                pageContent  = pageContent + '<li><a href="'
-                    + '#tip'
-                    + i
-                    +'">'
-                    +  titleElementText
-                    + '</a>'
-                ;
-
-                for(var x = tempLists.length;x > 0 ;x-- ){
-                    pageContent = pageContent
-
-                                  + '</li></ul>'
-                    ;
-
+                if(t<tocSpyNum){
+                    tocElement.setAttribute('style','position:absolute;top:'+ tocSpyNum +'px;');
+                }else{
+                    tocElement.setAttribute('style','position:fixed;top:10px;');
                 }
 
             }
         }
     }
-
-
-
-    pageContent = '<ul>'+ pageContent + '</ul>'
-
-    var tocElement= document.createElement('div');
-    tocElement.setAttribute('class','toc') ;
-
-    tocElement.innerHTML = pageContent;
-
-    pageBox.appendChild(tocElement);
-});
+})
