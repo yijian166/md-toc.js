@@ -94,51 +94,32 @@ dom.Ready(function(){
         if(pageBox.getAttribute('data-toc-class')){
             tocClass = pageBox.getAttribute('data-toc-class').toLowerCase();
         }
-
         (function(){
-
-
             var tempLists = [];
-
             for(var i = 0 ; i < titleListsLen;i ++) {
                 var j = i + 1;
                 var titleElement =  titleLists[i];
                 var titleElementName =  titleLists[i].tagName;
                 var titleElementText =   titleElement.innerHTML;
                 titleElement.setAttribute('id', 'tip' + i );
-
                 if(!(j == titleListsLen)) {
-
                     var titleNextElementName =   titleLists[j].tagName;
-
                     if(titleElementName != titleNextElementName) {
 
                         tempLists.push(titleElement);
 
                         var checkColse = false;
-
                         for(var t = 0 ;t < tempLists.length ;t++) {
-
                             var temp = tempLists[t];
                             var tempName = temp.tagName;
-
                             var y = 1;
-
-
                             if (tempName == titleNextElementName ){
-
-
                                 checkColse = true;
-
                                 break;
                             }
-
                             y++;
-
                         }
-
                         if(checkColse) {
-
                             switch(y){
                                 case 1 :
                                     tocContent  = tocContent + '<li><a href="'
@@ -216,12 +197,9 @@ dom.Ready(function(){
                                     + '</a></li>'
                         ;
                     }
-
                 }
                 else {
-
                     if(tempLists.length){
-
                         tocContent  = tocContent + '<li><a href="'
                             + '#tip'
                             + i
@@ -229,45 +207,25 @@ dom.Ready(function(){
                             +  titleElementText
                             + '</a>'
                         ;
-
                         for(var x = tempLists.length;x > 0 ;x-- ){
                             tocContent = tocContent
                                           + '</li></ul>'
                             ;
 
                         }
-
                     }
                 }
             }
-
-
             tocContent = '<ul>'+ tocContent + '</ul>';
-
-
         })();
 
         tocElement.innerHTML = tocContent;
-
-
-
         tocElement.setAttribute('class',tocClass) ;
-
         pageBox.appendChild(tocElement);
 
-
-        var tocCustomSpy = pageBox.getAttribute('data-toc-top');
-
-        var tocSpyNum;
-
-        if(tocCustomSpy.search(/[a-z]/i) ===  -1 ){
-            tocSpyNum = tocCustomSpy;
-        }else {
-            tocSpyNum = tocCustomSpy.slice(0,tocCustomSpy.search(/[a-z]/i));
-        }
+        var tocSpyNum = parseInt(pageBox.getAttribute('data-toc-top')) ;
 
         if(tocSpyNum && tocSpyNum > -1){
-            console.log(tocSpyNum);
             window.onscroll = function(){
                 var t = document.documentElement.scrollTop || document.body.scrollTop;
 
@@ -280,4 +238,4 @@ dom.Ready(function(){
             }
         }
     }
-})
+});
