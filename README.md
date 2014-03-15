@@ -3,6 +3,14 @@ md-toc.js
 
 动态生成静态HTML页面目录，特别适合由markdown语法生成的页面(例如诸多静态博客文章)。
 
+### 外网链接
+
+在此提供在百度BAE上的地址，会保持最新，欢迎使用
+
+```html
+<script src="http://isprite.duapp.com/lib/md-toc.js"></script>
+```
+
 ### 说明
 
 扫描指定元素（文章内容）内`h1`~`h6`标签，再生成对应的嵌套目录列表。
@@ -32,12 +40,6 @@ md-toc.js
 
 [Demo:learn.hicc.me](http://learn.hicc.me/html-css/images-audio-video.html)
 
-### 外网链接
 
-在此提供在百度BAE上的地址，会保持最新，欢迎使用
-
-```html
-<script src="http://isprite.duapp.com/lib/md-toc.js"></script>
-```
 
 
