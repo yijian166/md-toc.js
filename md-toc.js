@@ -7,50 +7,50 @@
 /**
  * dom ready form:http://www.cnblogs.com/rubylouvre/archive/2009/12/30/1635645.html
  */
- new function(){
-  dom = [];
-  dom.isReady = false;
-  dom.isFunction = function(obj){
-    return Object.prototype.toString.call(obj) === "[object Function]";
-  }
-  dom.Ready = function(fn){
-    dom.initReady();//如果没有建成DOM树，则走第二步，存储起来一起杀
-    if(dom.isFunction(fn)){
-      if(dom.isReady){
-        fn();//如果已经建成DOM，则来一个杀一个
-      }else{
-        dom.push(fn);//存储加载事件
-      }
+new function(){
+    dom = [];
+    dom.isReady = false;
+    dom.isFunction = function(obj){
+        return Object.prototype.toString.call(obj) === "[object Function]";
     }
-  }
-  dom.fireReady =function(){
-    if (dom.isReady)  return;
-    dom.isReady = true;
-    for(var i=0,n=dom.length;i<n;i++){
-      var fn = dom[i];
-      fn();
+    dom.Ready = function(fn){
+        dom.initReady();//如果没有建成DOM树，则走第二步，存储起来一起杀
+        if(dom.isFunction(fn)){
+            if(dom.isReady){
+                fn();//如果已经建成DOM，则来一个杀一个
+            }else{
+                dom.push(fn);//存储加载事件
+            }
+        }
     }
-    dom.length = 0;//清空事件
-  }
-  dom.initReady = function(){
-    if (document.addEventListener) {
-      document.addEventListener( "DOMContentLoaded", function(){
-        document.removeEventListener( "DOMContentLoaded", arguments.callee, false );//清除加载函数
-        dom.fireReady();
-      }, false );
-    }else{
-      if (document.getElementById) {
-        document.write("<script id=\"ie-domReady\" defer='defer'src=\"//:\"><\/script>");
-        document.getElementById("ie-domReady").onreadystatechange = function() {
-          if (this.readyState === "complete") {
-            dom.fireReady();
-            this.onreadystatechange = null;
-            this.parentNode.removeChild(this)
-          }
-        };
-      }
+    dom.fireReady =function(){
+        if (dom.isReady)  return;
+        dom.isReady = true;
+        for(var i=0,n=dom.length;i<n;i++){
+            var fn = dom[i];
+            fn();
+        }
+        dom.length = 0;//清空事件
     }
-  }
+    dom.initReady = function(){
+        if (document.addEventListener) {
+            document.addEventListener( "DOMContentLoaded", function(){
+                document.removeEventListener( "DOMContentLoaded", arguments.callee, false );//清除加载函数
+                dom.fireReady();
+            }, false );
+        }else{
+            if (document.getElementById) {
+                document.write("<script id=\"ie-domReady\" defer='defer'src=\"//:\"><\/script>");
+                document.getElementById("ie-domReady").onreadystatechange = function() {
+                    if (this.readyState === "complete") {
+                        dom.fireReady();
+                        this.onreadystatechange = null;
+                        this.parentNode.removeChild(this)
+                    }
+                };
+            }
+        }
+    }
 }
 
 /**
@@ -94,89 +94,108 @@ dom.Ready(function(){
         if(pageBox.getAttribute('data-toc-class')){
             tocClass = pageBox.getAttribute('data-toc-class').toLowerCase();
         }
+
         (function(){
+
+
             var tempLists = [];
+
             for(var i = 0 ; i < titleListsLen;i ++) {
                 var j = i + 1;
                 var titleElement =  titleLists[i];
                 var titleElementName =  titleLists[i].tagName;
-                var titleElementText =   titleElement.innerHTML;
+                var titleElementText =  titleElement.innerHTML;
                 titleElement.setAttribute('id', 'tip' + i );
+
                 if(!(j == titleListsLen)) {
-                    var titleNextElementName =   titleLists[j].tagName;
+
+                    var titleNextElementName =  titleLists[j].tagName;
+
                     if(titleElementName != titleNextElementName) {
 
-                        tempLists.push(titleElement);
+
 
                         var checkColse = false;
-                        for(var t = 0 ;t < tempLists.length ;t++) {
+
+                        var y = 1;
+
+                        for(var t = tempLists.length - 1 ;t >= 0 ;t--) {
+
                             var temp = tempLists[t];
                             var tempName = temp.tagName;
-                            var y = 1;
-                            if (tempName == titleNextElementName ){
+
+
+                            if (tempName == titleNextElementName){
+
                                 checkColse = true;
+
                                 break;
                             }
+
                             y++;
+
                         }
+
                         if(checkColse) {
+
                             switch(y){
                                 case 1 :
                                     tocContent  = tocContent + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a>'
-                                    + '</li></ul>'
+                                        + '#tip'
+                                        + i
+                                        +'">'
+                                        +  titleElementText
+                                        + '</a>'
+                                        + '</li></ul>'
                                     ;
                                     break;
 
                                 case 2 :
                                     tocContent  = tocContent + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul>'
+                                        + '#tip'
+                                        + i
+                                        +'">'
+                                        +  titleElementText
+                                        + '</a>'
+                                        + '</li></ul></li></ul>'
                                     ;
                                     break;
                                 case 3 :
                                     tocContent  = tocContent + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul>'
+                                        + '#tip'
+                                        + i
+                                        +'">'
+                                        +  titleElementText
+                                        + '</a>'
+                                        + '</li></ul></li></ul></li></ul>'
                                     ;
                                     break;
                                 case 4 :
                                     tocContent  = tocContent + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul></li></ul>'
+                                        + '#tip'
+                                        + i
+                                        +'">'
+                                        +  titleElementText
+                                        + '</a>'
+                                        + '</li></ul></li></ul></li></ul></li></ul>'
                                     ;
                                     break;
                                 case 5 :
                                     tocContent  = tocContent + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
+                                        + '#tip'
+                                        + i
+                                        +'">'
+                                        +  titleElementText
+                                        + '</a>'
+                                        + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
                                     ;
                                     break;
 
                             }
-                            tempLists.length = tempLists.length - y;
+                            tempLists.length = tempLists.length - y ;//更新栈的长度。
                         }
                         else {
+                            tempLists.push(titleElement);
                             tocContent  =  tocContent +  '<li><a href="'
                                 + '#tip'
                                 + i
@@ -189,16 +208,18 @@ dom.Ready(function(){
                     }
                     else {
                         tocContent  = tocContent
-                                    + '<li><a href="'
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  titleElementText
-                                    + '</a></li>'
+                            + '<li><a href="'
+                            + '#tip'
+                            + i
+                            +'">'
+                            +  titleElementText
+                            + '</a></li>'
                         ;
                     }
+
                 }
                 else {
+
                     if(tempLists.length){
                         tocContent  = tocContent + '<li><a href="'
                             + '#tip'
@@ -207,17 +228,29 @@ dom.Ready(function(){
                             +  titleElementText
                             + '</a>'
                         ;
+
                         for(var x = tempLists.length;x > 0 ;x-- ){
-                            tocContent = tocContent
-                                          + '</li></ul>'
-                            ;
+                            tocContent += '</li></ul>' ;
 
                         }
+                    }else {
+                        tocContent +=  '<li><a href="'
+                            + '#tip'
+                            + i
+                            +'">'
+                            +  titleElementText
+                            + '</a></li>'
                     }
                 }
             }
+
+
             tocContent = '<ul>'+ tocContent + '</ul>';
+
+
         })();
+
+//        console.log(tocContent);
 
         tocElement.innerHTML = tocContent;
         tocElement.setAttribute('class',tocClass) ;
@@ -228,7 +261,6 @@ dom.Ready(function(){
         if(tocSpyNum && tocSpyNum > -1){
             window.onscroll = function(){
                 var t = document.documentElement.scrollTop || document.body.scrollTop;
-
                 if(t<tocSpyNum){
                     tocElement.setAttribute('style','position:absolute;top:'+ tocSpyNum +'px;');
                 }else{
@@ -238,4 +270,4 @@ dom.Ready(function(){
             }
         }
     }
-});
+})

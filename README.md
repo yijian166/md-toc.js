@@ -32,4 +32,12 @@ md-toc.js
 
 [Demo:learn.hicc.me](http://learn.hicc.me/html-css/images-audio-video.html)
 
+### 外网链接
+
+在此提供在百度BAE上的地址，会保持最新，欢迎使用
+
+```html
+<script src="http://isprite.duapp.com/lib/md-toc.js"></script>
+```
+
 
