@@ -1,273 +1,207 @@
 /**
- * User: wcc
- * Date: 13-12-6
- * Time: 下午9:01
+ * md-toc.js v1.0.0
+ * https://github.com/yijian166/md-toc.js
  */
 
-/**
- * dom ready form:http://www.cnblogs.com/rubylouvre/archive/2009/12/30/1635645.html
- */
-new function(){
-    dom = [];
-    dom.isReady = false;
-    dom.isFunction = function(obj){
-        return Object.prototype.toString.call(obj) === "[object Function]";
+(function(window){
+    function Toc(id,options){
+        this.el = document.getElementById(id);
+        if(!this.el) return;
+        this.options = options || {};
+        this.tocLevel = parseInt(options.level) || 0;
+        this.tocClass = options.class || 'toc';
+        this.tocTop = parseInt(options.top) || 0;
+        this.elChilds = this.el.children;
+        if(!this.elChilds.length) return;
+        this._init();
     }
-    dom.Ready = function(fn){
-        dom.initReady();//如果没有建成DOM树，则走第二步，存储起来一起杀
-        if(dom.isFunction(fn)){
-            if(dom.isReady){
-                fn();//如果已经建成DOM，则来一个杀一个
-            }else{
-                dom.push(fn);//存储加载事件
+
+    Toc.prototype._init = function(){
+        this._collectTitleElements();
+        this._createTocContent();
+        this._showToc();
+    }
+
+
+    Toc.prototype._collectTitleElements = function() {
+        this._elTitlesNames = [],
+        this.elTitleElements = [];
+        for(var i=1;i<7;i++){
+            if(this.el.getElementsByTagName('h'+i).length){
+                this._elTitlesNames.push('h'+i);
+            }
+        }
+
+        this._elTitlesNames.length = this._elTitlesNames.length > this.tocLevel ? this.tocLevel : this._elTitlesNames.length;
+
+        for(var j=0;j < this.elChilds.length;j++){
+            this._elChildName = this.elChilds[j].tagName.toLowerCase();
+            if(this._elTitlesNames.toString().match( this._elChildName)){
+                this.elTitleElements.push(this.elChilds[j]);
             }
         }
     }
-    dom.fireReady =function(){
-        if (dom.isReady)  return;
-        dom.isReady = true;
-        for(var i=0,n=dom.length;i<n;i++){
-            var fn = dom[i];
-            fn();
-        }
-        dom.length = 0;//清空事件
-    }
-    dom.initReady = function(){
-        if (document.addEventListener) {
-            document.addEventListener( "DOMContentLoaded", function(){
-                document.removeEventListener( "DOMContentLoaded", arguments.callee, false );//清除加载函数
-                dom.fireReady();
-            }, false );
-        }else{
-            if (document.getElementById) {
-                document.write("<script id=\"ie-domReady\" defer='defer'src=\"//:\"><\/script>");
-                document.getElementById("ie-domReady").onreadystatechange = function() {
-                    if (this.readyState === "complete") {
-                        dom.fireReady();
-                        this.onreadystatechange = null;
-                        this.parentNode.removeChild(this)
+
+    Toc.prototype._createTocContent = function(){
+        this._elTitleElementsLen = this.elTitleElements.length;
+
+        if(!this._elTitleElementsLen) return;
+
+        this.tocContent = '';
+
+        this._tempLists = [];
+
+        for(var i=0;i< this._elTitleElementsLen;i++){
+            var j= i + 1;
+            this._elTitleElement = this.elTitleElements[i];
+            this._elTitleElementName = this._elTitleElement.tagName;
+            this._elTitleElementText = this._elTitleElement.innerHTML;
+            this._elTitleElement.setAttribute('id', 'tip' + i );
+
+            if(!(j == this._elTitleElementsLen)){
+                this._elNextTitleElementName = this.elTitleElements[j].tagName;
+
+                if(this._elTitleElementName != this._elNextTitleElementName){
+
+                    var checkColse = false,
+                        y = 1;
+                    for(var t = this._tempLists.length - 1 ;t >= 0 ;t--) {
+
+                        if ( this._tempLists[t].tagName == this._elNextTitleElementName){
+                            checkColse = true;
+                            break;
+                        }
+                        y++;
                     }
-                };
-            }
-        }
-    }
-}
 
-/**
- * md-toc code
- */
-
-dom.Ready(function(){
-
-    var elements = document.getElementsByTagName('*');
-    var pageBox ;
-    var needToc = false;
-
-    for(var i= 0 ,len =elements.length;i < len; i++ ){
-        if(elements[i].getAttribute('data-toc') && (elements[i].getAttribute('data-toc').toLowerCase() == 'true')){
-            pageBox = elements[i];
-            needToc = true;
-            break;
-        }
-    }
-
-    var pageElements= pageBox.children;
-    var pagelEmentsLength = pageElements.length ;
-    var titleLists = [];
-
-    for(var j= 0 ; j< pagelEmentsLength;j++){
-        var pagelEment = pageElements[j];
-        var elementName = pagelEment.tagName.toLowerCase();
-        if ((elementName == 'h2') ||(elementName == 'h3') || (elementName == 'h4') || (elementName == 'h5') || (elementName == 'h6') ){
-            titleLists.push(pagelEment) ;
-        }
-    }
-
-    var titleListsLen = titleLists.length;
-
-    if(needToc && titleListsLen ) {
-
-        var tocElement= document.createElement('div');
-        var tocContent = '';
-        var tocClass = 'toc';
-
-        if(pageBox.getAttribute('data-toc-class')){
-            tocClass = pageBox.getAttribute('data-toc-class').toLowerCase();
-        }
-
-        (function(){
-
-
-            var tempLists = [];
-
-            for(var i = 0 ; i < titleListsLen;i ++) {
-                var j = i + 1;
-                var titleElement =  titleLists[i];
-                var titleElementName =  titleLists[i].tagName;
-                var titleElementText =  titleElement.innerHTML;
-                titleElement.setAttribute('id', 'tip' + i );
-
-                if(!(j == titleListsLen)) {
-
-                    var titleNextElementName =  titleLists[j].tagName;
-
-                    if(titleElementName != titleNextElementName) {
-
-
-
-                        var checkColse = false;
-
-                        var y = 1;
-
-                        for(var t = tempLists.length - 1 ;t >= 0 ;t--) {
-
-                            var temp = tempLists[t];
-                            var tempName = temp.tagName;
-
-
-                            if (tempName == titleNextElementName){
-
-                                checkColse = true;
-
+                    if(checkColse){
+                        switch(y){
+                            case 1 :
+                                this.tocContent  = this.tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  this._elTitleElementText
+                                    + '</a>'
+                                    + '</li></ul>'
+                                ;
                                 break;
-                            }
 
-                            y++;
-
+                            case 2 :
+                                this.tocContent  = this.tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  this._elTitleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul>'
+                                ;
+                                break;
+                            case 3 :
+                                this.tocContent  = this.tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  this._elTitleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul>'
+                                ;
+                                break;
+                            case 4 :
+                                this.tocContent  = this.tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  this._elTitleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul></li></ul>'
+                                ;
+                                break;
+                            case 5 :
+                                this.tocContent  = this.tocContent + '<li><a href="'
+                                    + '#tip'
+                                    + i
+                                    +'">'
+                                    +  this._elTitleElementText
+                                    + '</a>'
+                                    + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
+                                ;
+                                break;
                         }
-
-                        if(checkColse) {
-
-                            switch(y){
-                                case 1 :
-                                    tocContent  = tocContent + '<li><a href="'
-                                        + '#tip'
-                                        + i
-                                        +'">'
-                                        +  titleElementText
-                                        + '</a>'
-                                        + '</li></ul>'
-                                    ;
-                                    break;
-
-                                case 2 :
-                                    tocContent  = tocContent + '<li><a href="'
-                                        + '#tip'
-                                        + i
-                                        +'">'
-                                        +  titleElementText
-                                        + '</a>'
-                                        + '</li></ul></li></ul>'
-                                    ;
-                                    break;
-                                case 3 :
-                                    tocContent  = tocContent + '<li><a href="'
-                                        + '#tip'
-                                        + i
-                                        +'">'
-                                        +  titleElementText
-                                        + '</a>'
-                                        + '</li></ul></li></ul></li></ul>'
-                                    ;
-                                    break;
-                                case 4 :
-                                    tocContent  = tocContent + '<li><a href="'
-                                        + '#tip'
-                                        + i
-                                        +'">'
-                                        +  titleElementText
-                                        + '</a>'
-                                        + '</li></ul></li></ul></li></ul></li></ul>'
-                                    ;
-                                    break;
-                                case 5 :
-                                    tocContent  = tocContent + '<li><a href="'
-                                        + '#tip'
-                                        + i
-                                        +'">'
-                                        +  titleElementText
-                                        + '</a>'
-                                        + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
-                                    ;
-                                    break;
-
-                            }
-                            tempLists.length = tempLists.length - y ;//更新栈的长度。
-                        }
-                        else {
-                            tempLists.push(titleElement);
-                            tocContent  =  tocContent +  '<li><a href="'
-                                + '#tip'
-                                + i
-                                +'">'
-                                +  titleElementText
-                                + '</a>'
-                                + '<ul>'
-                            ;
-                        }
-                    }
-                    else {
-                        tocContent  = tocContent
-                            + '<li><a href="'
+                        this._tempLists.length = this._tempLists.length - y ;//更新栈的长度。
+                    } else {
+                        this._tempLists.push(this._elTitleElement);
+                        this.tocContent  =  this.tocContent +  '<li><a href="'
                             + '#tip'
                             + i
                             +'">'
-                            +  titleElementText
-                            + '</a></li>'
-                        ;
-                    }
-
-                }
-                else {
-
-                    if(tempLists.length){
-                        tocContent  = tocContent + '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
+                            +  this._elTitleElementText
                             + '</a>'
+                            + '<ul>'
                         ;
-
-                        for(var x = tempLists.length;x > 0 ;x-- ){
-                            tocContent += '</li></ul>' ;
-
-                        }
-                    }else {
-                        tocContent +=  '<li><a href="'
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  titleElementText
-                            + '</a></li>'
                     }
+                }else{
+                    this.tocContent  = this.tocContent
+                        + '<li><a href="'
+                        + '#tip'
+                        + i
+                        +'">'
+                        +  this._elTitleElementText
+                        + '</a></li>'
+                    ;
+                }
+            }else{
+
+                if(this._tempLists.length){
+
+                    this.tocContent  = this.tocContent + '<li><a href="'
+                        + '#tip'
+                        + i
+                        +'">'
+                        +  this._elTitleElementText
+                        + '</a>'
+                    ;
+
+                    for(var x = this._tempLists.length;x > 0 ;x-- ){
+                        this.tocContent  += '</li></ul>' ;
+
+                    }
+                }else{
+                    this.tocContent +=  '<li><a href="'
+                        + '#tip'
+                        + i
+                        +'">'
+                        +  this._elTitleElementText
+                        + '</a></li>'
                 }
             }
+        }
+        this.tocContent = '<ul>'+ this.tocContent + '</ul>';
+    }
 
+    Toc.prototype._showToc = function() {
 
-            tocContent = '<ul>'+ tocContent + '</ul>';
+        this.toc = document.createElement('div');
+        this.toc.innerHTML = this.tocContent;
+        this.toc.setAttribute('class',this.tocClass);
+        this.el.appendChild(this.toc);
 
+        var self = this;
 
-        })();
-
-//        console.log(tocContent);
-
-        tocElement.innerHTML = tocContent;
-        tocElement.setAttribute('class',tocClass) ;
-        pageBox.appendChild(tocElement);
-
-        var tocSpyNum = parseInt(pageBox.getAttribute('data-toc-top')) ;
-
-        if(tocSpyNum && tocSpyNum > -1){
+        if(this.tocTop > -1){
             window.onscroll = function(){
                 var t = document.documentElement.scrollTop || document.body.scrollTop;
-                if(t<tocSpyNum){
-                    tocElement.setAttribute('style','position:absolute;top:'+ tocSpyNum +'px;');
+                if(t< self.tocTop){
+                    self.toc.setAttribute('style','position:absolute;top:'+ self.tocTop +'px;');
                 }else{
-                    tocElement.setAttribute('style','position:fixed;top:10px;');
+                    self.toc.setAttribute('style','position:fixed;top:10px;');
                 }
 
             }
         }
-    }
-})
+
+    };
+
+    window.Toc = Toc;
+
+})(window);
