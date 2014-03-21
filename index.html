@@ -37,11 +37,53 @@
 <p>动态生成静态HTML页面目录，特别适合由markdown语法生成的页面(例如诸多静态博客文章)。</p>
 
 <h3>
-<a name="%E5%A4%96%E7%BD%91%E9%93%BE%E6%8E%A5" class="anchor" href="#%E5%A4%96%E7%BD%91%E9%93%BE%E6%8E%A5"><span class="octicon octicon-link"></span></a>外网链接</h3>
+<a name="%E4%BD%BF%E7%94%A8" class="anchor" href="#%E4%BD%BF%E7%94%A8"><span class="octicon octicon-link"></span></a>使用</h3>
 
-<p>在此提供在百度BAE上的地址，会保持最新，欢迎使用</p>
+<p>在此提供在百度BAE上的地址，会保持最新，欢迎使用:)</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"post"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;&lt;h1&gt;</span>
+    ……  
+    <span class="nt">&lt;h2&gt;&lt;h2&gt;</span>
+    ……  
+    <span class="nt">&lt;h1&gt;&lt;h1&gt;</span>
+    ……  
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
 
 <div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"http://isprite.duapp.com/lib/md-toc.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+    <span class="k">new</span> <span class="nx">Toc</span><span class="p">(</span><span class="s1">'post'</span><span class="p">,</span><span class="nx">options</span><span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre></div>
+
+<ul>
+<li>  <code>id</code>：为需要生成目录的包裹元素的<code>id</code>值，必填。</li>
+<li>  <code>options</code>：中可以添加三个参数，可选，可以不传。
+
+<ul>
+<li>  <code>level</code>：此处定义目录的层级，如果文档标题较多，层级较深，在此可以设置层级数来不现实一些小标题，缺省，0或者大于6的值则处理为标题全部添加；</li>
+<li>  <code>class</code>：此处定义目录元素的<code>class</code>值，若缺失则<code>class</code>默认为<code>toc</code>
+</li>
+<li>  <code>top</code>：此处做了简单的体验优化，设置了<strong>非负值</strong>时候，
+
+<ul>
+<li>  文档垂直滚动区域小余该值时：目录<strong><code>position:absolute</code></strong>，<code>top</code>为该值。横向定位属性(<code>left</code>或者<code>right</code>)，以及所需的定位依赖元素自行定义；</li>
+<li>  文档垂直滚动超出该值后，目录<strong><code>position:fixed;top:10px</code></strong>,向定位属性(<code>left</code>或者<code>right</code>)自行定义；</li>
+<li>  属性值最好不要带单位，只取里面的数字。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><p>示例：</p>
+
+<div class="highlight highlight-html"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;</span>
+    <span class="k">new</span> <span class="nx">Toc</span><span class="p">(</span> <span class="s1">'post'</span><span class="p">,{</span>
+        <span class="s1">'level'</span><span class="o">:</span><span class="mi">3</span><span class="p">,</span>
+        <span class="s1">'top'</span><span class="o">:</span><span class="mi">200</span><span class="p">,</span>
+        <span class="s1">'class'</span><span class="o">:</span><span class="s1">'toc'</span>
+    <span class="p">}</span> <span class="p">);</span>
+<span class="nt">&lt;/script&gt;</span>
 </pre></div>
 
 <h3>
@@ -53,24 +95,12 @@
 <li><p>根据文章结构层级，生成相应层级的目录。</p></li>
 <li><p>目录实在页面加载之后动态生成，对搜索引擎无用因此链接hash值顺次排序</p></li>
 <li><p><strong>无需手动编辑markdown文件，不违背md宗旨，又能增加文章阅读时候的便利性，增强体验</strong>。</p></li>
-<li><p>快速生成目录，不必等待大资源加载完成（document ready后），用户感觉不到延迟。</p></li>
-<li>  浏览器支持：IE8+，Chrome，Firefox，Opera，Safari。</li>
+<li><p>浏览器支持：IE8+，Chrome，Firefox，Opera，Safari。</p></li>
 </ul><h3>
-<a name="%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95" class="anchor" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="octicon octicon-link"></span></a>使用方法</h3>
-
-<p>在需要生成目录的元素内设置以下自定义属性，即可很方便的使用toc.js</p>
+<a name="%E6%B3%A8%E6%84%8F" class="anchor" href="#%E6%B3%A8%E6%84%8F"><span class="octicon octicon-link"></span></a>注意</h3>
 
 <ul>
-<li>  <code>data-toc="true"</code>：如果想要生成目录，需要设置<code>data-toc</code>且赋值必须为<code>true</code>，建议文档中只设置一处，若有多处，只第一处生效；</li>
-<li>  <code>data-toc-class="toc"</code>：可选，此处定义目录元素的<code>class</code>值，若缺失则<code>class</code>默认为<code>toc</code>；</li>
-<li>  <code>data-toc-top="200"</code>：可选，此处做了简单的体验优化，设置了<strong>非负值</strong>时候，
-
-<ul>
-<li>  文档垂直滚动区域小余该值时：目录<strong><code>position:absolute</code></strong>，<code>top</code>为该值。横向定位属性(<code>left</code>或者<code>right</code>)，以及所需的定位依赖元素自行定义；</li>
-<li>  文档垂直滚动超出该值后，目录<strong><code>position:fixed;top:10px</code></strong>,向定位属性(<code>left</code>或者<code>right</code>)自行定义；</li>
-<li>  属性值最好不要带单位，只取里面的数字。</li>
-</ul>
-</li>
+<li>  请务必保证页面的标题层次的正确性，否则会生成错误的目录结构</li>
 </ul><h3>
 <a name="demo" class="anchor" href="#demo"><span class="octicon octicon-link"></span></a>Demo</h3>
 
