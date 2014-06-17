@@ -195,7 +195,13 @@
         this.toc = document.createElement('div');
         this.toc.innerHTML = this.tocContent;
         this.toc.setAttribute('class',this.tocClass);
-        this.el.appendChild(this.toc);
+        if(! this.options.targetId){
+            // 没有传入目标id，追加到生成目录的div内
+            this.el.appendChild(this.toc);
+        }else{
+             //有传入目标id，直接在目标id内生成div
+            document.getElementById(this.options.targetId).appendChild(this.toc);
+        }
 
         var self = this;
 
