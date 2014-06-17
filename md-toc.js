@@ -51,6 +51,8 @@
 
         this._tempLists = [];
 
+        // 本页面的完整地址，某些情况下base标签和页面地址不一致，会造成锚点混乱
+        var url = location.origin+location.pathname;
         for(var i=0;i< this._elTitleElementsLen;i++){
             var j= i + 1;
             this._elTitleElement = this.elTitleElements[i];
@@ -78,6 +80,7 @@
                         switch(y){
                             case 1 :
                                 this.tocContent  = this.tocContent + '<li><a href="'
+                                    + url
                                     + '#tip'
                                     + i
                                     +'">'
@@ -89,6 +92,7 @@
 
                             case 2 :
                                 this.tocContent  = this.tocContent + '<li><a href="'
+                                    + url
                                     + '#tip'
                                     + i
                                     +'">'
@@ -99,6 +103,7 @@
                                 break;
                             case 3 :
                                 this.tocContent  = this.tocContent + '<li><a href="'
+                                    + url
                                     + '#tip'
                                     + i
                                     +'">'
@@ -109,6 +114,7 @@
                                 break;
                             case 4 :
                                 this.tocContent  = this.tocContent + '<li><a href="'
+                                    + url
                                     + '#tip'
                                     + i
                                     +'">'
@@ -119,6 +125,7 @@
                                 break;
                             case 5 :
                                 this.tocContent  = this.tocContent + '<li><a href="'
+                                    + url
                                     + '#tip'
                                     + i
                                     +'">'
@@ -132,6 +139,7 @@
                     } else {
                         this._tempLists.push(this._elTitleElement);
                         this.tocContent  =  this.tocContent +  '<li><a href="'
+                            + url
                             + '#tip'
                             + i
                             +'">'
@@ -143,6 +151,7 @@
                 }else{
                     this.tocContent  = this.tocContent
                         + '<li><a href="'
+                        + url
                         + '#tip'
                         + i
                         +'">'
@@ -155,6 +164,7 @@
                 if(this._tempLists.length){
 
                     this.tocContent  = this.tocContent + '<li><a href="'
+                        + url
                         + '#tip'
                         + i
                         +'">'
@@ -168,6 +178,7 @@
                     }
                 }else{
                     this.tocContent +=  '<li><a href="'
+                        + url
                         + '#tip'
                         + i
                         +'">'
