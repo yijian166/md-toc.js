@@ -1,5 +1,5 @@
 /**
- * md-toc.js v1.0.0
+ * md-toc.js v1.0.1
  * https://github.com/yijian166/md-toc.js
  */
 
@@ -20,12 +20,12 @@
         this._collectTitleElements();
         this._createTocContent();
         this._showToc();
-    }
+    };
 
 
     Toc.prototype._collectTitleElements = function() {
         this._elTitlesNames = [],
-        this.elTitleElements = [];
+            this.elTitleElements = [];
         for(var i=1;i<7;i++){
             if(this.el.getElementsByTagName('h'+i).length){
                 this._elTitlesNames.push('h'+i);
@@ -40,7 +40,7 @@
                 this.elTitleElements.push(this.elChilds[j]);
             }
         }
-    }
+    };
 
     Toc.prototype._createTocContent = function(){
         this._elTitleElementsLen = this.elTitleElements.length;
@@ -188,7 +188,7 @@
             }
         }
         this.tocContent = '<ul>'+ this.tocContent + '</ul>';
-    }
+    };
 
     Toc.prototype._showToc = function() {
 
@@ -199,7 +199,7 @@
             // 没有传入目标id，追加到生成目录的div内
             this.el.appendChild(this.toc);
         }else{
-             //有传入目标id，直接在目标id内生成div
+            //有传入目标id，直接在目标id内生成div
             document.getElementById(this.options.targetId).appendChild(this.toc);
         }
 
