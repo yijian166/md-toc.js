@@ -8,6 +8,7 @@ md-toc.js
 在此提供在百度BAE上的地址，会保持最新，欢迎使用:)
 
 ```html
+<aside id="toc"></aside>
 <div id="post">
 	<h1><h1>
 	……	
@@ -33,6 +34,7 @@ md-toc.js
 		-	文档垂直滚动区域小余该值时：目录**`position:absolute`**，`top`为该值。横向定位属性(`left`或者`right`)，以及所需的定位依赖元素自行定义；
 		-	文档垂直滚动超出该值后，目录**`position:fixed;top:10px`**,向定位属性(`left`或者`right`)自行定义；
 		-	属性值最好不要带单位，只取里面的数字。
+	- 	`targetId`: 定义生成的TOC追加到哪个容器，即目录生成的位置，不写默认追加到`id`对应的
 	
 示例：
 
@@ -41,7 +43,8 @@ md-toc.js
     new Toc( 'post',{
         'level':3,
         'top':200,
-        'class':'toc'
+        'class':'toc',
+        'targetId':'toc'
     } );
 </script>
 ```
