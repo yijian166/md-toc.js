@@ -1,5 +1,5 @@
 /**
- * md-toc.js v1.0.1
+ * md-toc.js v1.0.2
  * https://github.com/yijian166/md-toc.js
  */
 
