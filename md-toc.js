@@ -9,7 +9,7 @@
         if(!this.el) return;
         this.options = options || {};
         this.tocLevel = parseInt(options.level) || 0;
-        this.tocClass = options.class || 'toc';
+        this.tocClass = options['class'] || 'toc';
         this.tocTop = parseInt(options.top) || 0;
         this.elChilds = this.el.children;
         if(!this.elChilds.length) return;
@@ -44,11 +44,8 @@
 
     Toc.prototype._createTocContent = function(){
         this._elTitleElementsLen = this.elTitleElements.length;
-
         if(!this._elTitleElementsLen) return;
-
         this.tocContent = '';
-
         this._tempLists = [];
 
         // 本页面的完整地址，某些情况下base标签和页面地址不一致，会造成锚点混乱
@@ -60,15 +57,13 @@
             this._elTitleElementText = this._elTitleElement.innerHTML;
             this._elTitleElement.setAttribute('id', 'tip' + i );
 
-            if(!(j == this._elTitleElementsLen)){
+            this.tocContent += '<li><a href="'+ url + '#tip' + i +'">' +  this._elTitleElementText + '</a>';
+
+            if(j != this._elTitleElementsLen){
                 this._elNextTitleElementName = this.elTitleElements[j].tagName;
-
                 if(this._elTitleElementName != this._elNextTitleElementName){
-
-                    var checkColse = false,
-                        y = 1;
+                    var checkColse = false, y = 1;
                     for(var t = this._tempLists.length - 1 ;t >= 0 ;t--) {
-
                         if ( this._tempLists[t].tagName == this._elNextTitleElementName){
                             checkColse = true;
                             break;
@@ -77,113 +72,21 @@
                     }
 
                     if(checkColse){
-                        switch(y){
-                            case 1 :
-                                this.tocContent  = this.tocContent + '<li><a href="'
-                                    + url
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  this._elTitleElementText
-                                    + '</a>'
-                                    + '</li></ul>'
-                                ;
-                                break;
-
-                            case 2 :
-                                this.tocContent  = this.tocContent + '<li><a href="'
-                                    + url
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  this._elTitleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul>'
-                                ;
-                                break;
-                            case 3 :
-                                this.tocContent  = this.tocContent + '<li><a href="'
-                                    + url
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  this._elTitleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul>'
-                                ;
-                                break;
-                            case 4 :
-                                this.tocContent  = this.tocContent + '<li><a href="'
-                                    + url
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  this._elTitleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul></li></ul>'
-                                ;
-                                break;
-                            case 5 :
-                                this.tocContent  = this.tocContent + '<li><a href="'
-                                    + url
-                                    + '#tip'
-                                    + i
-                                    +'">'
-                                    +  this._elTitleElementText
-                                    + '</a>'
-                                    + '</li></ul></li></ul></li></ul></li></ul></li></ul>'
-                                ;
-                                break;
-                        }
+                        this.tocContent += new Array(y+1).join('</li></ul>');
                         this._tempLists.length = this._tempLists.length - y ;//更新栈的长度。
                     } else {
                         this._tempLists.push(this._elTitleElement);
-                        this.tocContent  =  this.tocContent +  '<li><a href="'
-                            + url
-                            + '#tip'
-                            + i
-                            +'">'
-                            +  this._elTitleElementText
-                            + '</a>'
-                            + '<ul>'
-                        ;
+                        this.tocContent += '<ul>';
                     }
-                }else{
-                    this.tocContent  = this.tocContent
-                        + '<li><a href="'
-                        + url
-                        + '#tip'
-                        + i
-                        +'">'
-                        +  this._elTitleElementText
-                        + '</a></li>'
-                    ;
+                }
+                else{
+                    this.tocContent  += '</li>';
                 }
             }else{
-
                 if(this._tempLists.length){
-
-                    this.tocContent  = this.tocContent + '<li><a href="'
-                        + url
-                        + '#tip'
-                        + i
-                        +'">'
-                        +  this._elTitleElementText
-                        + '</a>'
-                    ;
-
-                    for(var x = this._tempLists.length;x > 0 ;x-- ){
-                        this.tocContent  += '</li></ul>' ;
-
-                    }
+                    this.tocContent += new Array(this._tempLists.length+1).join('</li></ul>');
                 }else{
-                    this.tocContent +=  '<li><a href="'
-                        + url
-                        + '#tip'
-                        + i
-                        +'">'
-                        +  this._elTitleElementText
-                        + '</a></li>'
+                    this.tocContent  += '</li>';
                 }
             }
         }
